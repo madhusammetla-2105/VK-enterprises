@@ -1,0 +1,214 @@
+/* ===== Global Styles ===== */
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--body-md-size);
+  font-weight: var(--body-md-weight);
+  line-height: var(--body-md-line);
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  min-block-size: 100dvh;
+}
+
+/* ── App Shell Layout ── */
+#app {
+  display: flex;
+  min-block-size: 100dvh;
+}
+
+.app-sidebar {
+  position: fixed;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  inline-size: var(--sidebar-width);
+  block-size: 100dvh;
+  z-index: 100;
+}
+
+.app-main {
+  margin-inline-start: var(--sidebar-width);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-block-size: 100dvh;
+}
+
+.app-topbar {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 50;
+  block-size: var(--topbar-height);
+}
+
+.app-content {
+  flex: 1;
+  padding: var(--space-8) var(--margin-desktop);
+  max-inline-size: 1400px;
+  inline-size: 100%;
+}
+
+/* ── Full-page layout (login, register) ── */
+.app-fullpage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-block-size: 100dvh;
+  inline-size: 100%;
+  flex: 1;
+  background-color: var(--color-bg);
+}
+
+/* ── Typography Utilities ── */
+.text-display-lg {
+  font-family: var(--font-heading);
+  font-size: var(--display-lg-size);
+  font-weight: var(--display-lg-weight);
+  line-height: var(--display-lg-line);
+  letter-spacing: var(--display-lg-spacing);
+}
+
+.text-headline-lg {
+  font-family: var(--font-heading);
+  font-size: var(--headline-lg-size);
+  font-weight: var(--headline-lg-weight);
+  line-height: var(--headline-lg-line);
+  letter-spacing: var(--headline-lg-spacing);
+}
+
+.text-headline-md {
+  font-family: var(--font-heading);
+  font-size: var(--headline-md-size);
+  font-weight: var(--headline-md-weight);
+  line-height: var(--headline-md-line);
+}
+
+.text-body-lg {
+  font-family: var(--font-body);
+  font-size: var(--body-lg-size);
+  font-weight: var(--body-lg-weight);
+  line-height: var(--body-lg-line);
+}
+
+.text-body-sm {
+  font-family: var(--font-body);
+  font-size: var(--body-sm-size);
+  font-weight: var(--body-sm-weight);
+  line-height: var(--body-sm-line);
+}
+
+.text-label-caps {
+  font-family: var(--font-mono);
+  font-size: var(--label-caps-size);
+  font-weight: var(--label-caps-weight);
+  line-height: var(--label-caps-line);
+  letter-spacing: var(--label-caps-spacing);
+  text-transform: uppercase;
+}
+
+.text-muted {
+  color: var(--color-text-muted);
+}
+
+.text-light {
+  color: var(--color-text-light);
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar {
+  inline-size: 6px;
+  block-size: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--surface-dim);
+  border-radius: var(--radius-full);
+}
+
+/* ── Animations ── */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn var(--transition-base) both;
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp var(--transition-base) both;
+}
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+  .app-sidebar {
+    transform: translateX(-100%);
+    transition: transform var(--transition-base);
+  }
+
+  .app-sidebar.is-open {
+    transform: translateX(0);
+  }
+
+  .app-main {
+    margin-inline-start: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .app-content {
+    padding: var(--space-4) var(--margin-mobile);
+  }
+
+  .text-display-lg {
+    font-size: 2rem;
+    line-height: 2.5rem;
+  }
+}

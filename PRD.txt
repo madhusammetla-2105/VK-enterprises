@@ -1,0 +1,39 @@
+overview:
+i am basically building a web-application for my client VK enterprises. let me explain what they do. 
+VK Enterprises is a medical related company. where they sell all surgical items and Hospital Equiments.
+To hospitals and phamacies. 
+
+their problems:
+1. They did'nt have any website. they are trying to build one to showcase their products to customers online.
+
+what we are doing for them:
+1. we are building a website where thye can showcase their products. can get requests from user for product requistions.
+
+Project requirement details:
+UI design:
+basically i have generated a ui design using stitch. for basic understand of the website UI design. 
+i will attach the code and screen short of it. go throudg and generate the exact UI design and styles as it is.
+
+
+here we are building two different platforms.
+1. for users (hospitals and phamacies)
+2. admin panel for VK enterprises
+
+User side features:
+
+1. showcase page where user can konw about us.
+2. products page where usere can see all the products based on category. they can search for a product.
+3. product details page where he can see product details and can request it. increase the quantity, add to cart and all.
+4. cart page where he can see all the products he added to cart and can request them.
+5. requests page where he can see all the products he requested and their status.
+6. request-details page where he can see all the products details he requested and their statues.
+7. login page where he can login and register.
+
+admin side features:
+1. order-requests page where he can see all the orders requested by users.
+2. order-request-details page where he can see all the products details  requested by the user. and he can update the status from here like request accept
+deliveried, rejact.
+
+i will mention some more features and details while developing the project.
+
+
