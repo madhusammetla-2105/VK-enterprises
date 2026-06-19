@@ -1,9 +1,7 @@
-/* ===== CartPage Component ===== */
-
 import { store } from '../store.js';
 import { router } from '../router.js';
 import { CartItem } from '../components/CartItem.js';
-import { formatCurrency, generateOrderId } from '../utils/helpers.js';
+import { generateOrderId } from '../utils/helpers.js';
 import { showToast } from '../components/Toast.js';
 import { bindQuantityCounterEvents } from '../components/QuantityCounter.js';
 
@@ -13,7 +11,6 @@ import { bindQuantityCounterEvents } from '../components/QuantityCounter.js';
  */
 export function CartPage() {
   const cartItems = store.cart;
-  const total = store.cartTotal;
   const count = store.cartCount;
 
   if (cartItems.length === 0) {
@@ -48,17 +45,9 @@ export function CartPage() {
             <span>Total Categories</span>
             <span style="font-weight:500;">${cartItems.length}</span>
           </div>
-          <div class="cart-summary-row">
+          <div class="cart-summary-row" style="margin-block-end:var(--space-4);">
             <span>Total Item Units</span>
             <span style="font-weight:500;">${count} units</span>
-          </div>
-          <div class="cart-summary-row" style="color:var(--color-text-muted);font-size:0.75rem;line-height:1.4;margin-block-start:var(--space-2);">
-            * Prices are indicative estimated catalog values. Final prices will be reviewed and sent by VK Enterprises agents in an approved quotation.
-          </div>
-
-          <div class="cart-summary-total">
-            <span>Est. Total</span>
-            <span>${formatCurrency(total)}</span>
           </div>
 
           <button class="btn btn-primary btn-lg" id="submit-quote-btn" style="inline-size:100%;margin-block-start:var(--space-6);display:flex;align-items:center;justify-content:center;gap:8px;">
@@ -81,37 +70,14 @@ export function bindCartEvents() {
   // Bind Quantity Counter Events
   bindQuantityCounterEvents(container, (productId, newQty) => {
     store.updateCartQuantity(productId, newQty);
-    
-    // 1. Update individual item total price inline
-    const cartItemEl = container.querySelector(`.cart-item[data-product-id="${productId}"]`);
-    if (cartItemEl) {
-      const item = store.cart.find(i => i.productId === productId);
-      if (item) {
-        const priceEl = cartItemEl.querySelector('.cart-item-price');
-        if (priceEl) {
-          priceEl.innerHTML = `
-            ${formatCurrency(item.unitPrice * newQty)}
-            <div style="font-size:0.75rem;font-weight:400;color:var(--color-text-muted);margin-block-start:2px;text-align:end;">
-              ${formatCurrency(item.unitPrice)} each
-            </div>
-          `;
-        }
-      }
-    }
 
-    // 2. Update Cart Summary card values inline
+    // Update Cart Summary card values inline
     const summaryCard = container.querySelector('.cart-summary');
     if (summaryCard) {
       // Find the second row (Total Item Units)
       const countLabel = summaryCard.querySelector('.cart-summary-row:nth-of-type(2) span:last-child');
       if (countLabel) {
         countLabel.textContent = `${store.cartCount} units`;
-      }
-      
-      // Find the total row (Est. Total)
-      const totalLabel = summaryCard.querySelector('.cart-summary-total span:last-child');
-      if (totalLabel) {
-        totalLabel.textContent = formatCurrency(store.cartTotal);
       }
     }
   });
@@ -150,7 +116,7 @@ export function bindCartEvents() {
         userEmail: store.user.email,
         userPhone: store.user.phone,
         status: 'pending',
-        totalAmount: store.cartTotal,
+        totalAmount: 0,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         items: [...store.cart],

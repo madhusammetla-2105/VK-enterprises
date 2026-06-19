@@ -3,7 +3,6 @@
 import { store } from '../store.js';
 import { router } from '../router.js';
 import { CATEGORIES } from '../utils/constants.js';
-import { formatCurrency } from '../utils/helpers.js';
 import { showModal, closeModal } from '../components/Modal.js';
 import { showToast } from '../components/Toast.js';
 
@@ -155,7 +154,6 @@ export function ManageProductsPage() {
               <th style="color:#fff;font-family:var(--font-heading);font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;padding:var(--space-3) var(--space-4);text-align:start;inline-size:60px;">Image</th>
               <th style="color:#fff;font-family:var(--font-heading);font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;padding:var(--space-3) var(--space-4);text-align:start;">Product Name</th>
               <th style="color:#fff;font-family:var(--font-heading);font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;padding:var(--space-3) var(--space-4);text-align:start;inline-size:150px;">Category</th>
-              <th style="color:#fff;font-family:var(--font-heading);font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;padding:var(--space-3) var(--space-4);text-align:start;inline-size:120px;">Price</th>
               <th style="color:#fff;font-family:var(--font-heading);font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;padding:var(--space-3) var(--space-4);text-align:start;inline-size:140px;">SKU</th>
               <th style="color:#fff;font-family:var(--font-heading);font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;padding:var(--space-3) var(--space-4);text-align:start;inline-size:140px;">Status</th>
               <th style="color:#fff;font-family:var(--font-heading);font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;padding:var(--space-3) var(--space-4);text-align:end;inline-size:110px;">Actions</th>
@@ -185,11 +183,6 @@ export function ManageProductsPage() {
                   ${categoryLabels[p.category] || p.category}
                 </td>
 
-                <!-- Price -->
-                <td style="padding:var(--space-3) var(--space-4);vertical-align:middle;font-family:var(--font-heading);font-weight:700;color:var(--primary);font-size:0.925rem;">
-                  ${formatCurrency(p.price)}
-                </td>
-
                 <!-- SKU -->
                 <td style="padding:var(--space-3) var(--space-4);vertical-align:middle;font-family:var(--font-mono);font-size:0.75rem;color:var(--color-text);">
                   ${p.sku}
@@ -214,7 +207,7 @@ export function ManageProductsPage() {
               </tr>
             `).join('') : `
               <tr>
-                <td colspan="7" style="padding:var(--space-12) 0;text-align:center;color:var(--color-text-muted);">
+                <td colspan="6" style="padding:var(--space-12) 0;text-align:center;color:var(--color-text-muted);">
                   <div style="display:flex;flex-direction:column;align-items:center;gap:var(--space-3);">
                     <span class="material-symbols-outlined" style="font-size:3rem;color:var(--color-text-light);">search_off</span>
                     <div style="font-weight:600;font-size:1rem;">No matching products found</div>
@@ -434,13 +427,6 @@ function openAddEditModal(product = null) {
           </select>
         </div>
         <div style="display:flex; flex-direction:column; gap:var(--space-2);">
-          <label for="prod-price" style="font-size:var(--body-sm-size); font-weight:600; color:var(--color-text);">Price (INR) *</label>
-          <input type="number" id="prod-price" class="input" placeholder="425.00" step="0.01" min="0" required value="${product?.price || ''}" />
-        </div>
-      </div>
-
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:var(--space-4);">
-        <div style="display:flex; flex-direction:column; gap:var(--space-2);">
           <label for="prod-status" style="font-size:var(--body-sm-size); font-weight:600; color:var(--color-text);">Stock Status *</label>
           <select id="prod-status" class="input" required style="padding-inline-end: var(--space-8);">
             <option value="in_stock" ${product?.stockStatus === 'in_stock' ? 'selected' : ''}>In Stock</option>
@@ -449,6 +435,9 @@ function openAddEditModal(product = null) {
             <option value="out_of_stock" ${product?.stockStatus === 'out_of_stock' ? 'selected' : ''}>Out of Stock</option>
           </select>
         </div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:1fr; gap:var(--space-4);">
         <div style="display:flex; flex-direction:column; gap:var(--space-2);">
           <label for="prod-image" style="font-size:var(--body-sm-size); font-weight:600; color:var(--color-text);">Image URL</label>
           <input type="text" id="prod-image" class="input" placeholder="e.g. /images/surgical_scalpel.png" value="${product?.imageUrl || ''}" />
@@ -546,7 +535,6 @@ function openAddEditModal(product = null) {
       const name = document.getElementById('prod-name').value.trim();
       const sku = document.getElementById('prod-sku').value.trim();
       const category = document.getElementById('prod-category').value;
-      const price = parseFloat(document.getElementById('prod-price').value);
       const stockStatus = document.getElementById('prod-status').value;
       const imageUrl = document.getElementById('prod-image').value.trim();
       const description = document.getElementById('prod-desc').value.trim();
@@ -576,7 +564,7 @@ function openAddEditModal(product = null) {
         name,
         sku,
         category,
-        price,
+        price: 0,
         stockStatus,
         imageUrl,
         description,

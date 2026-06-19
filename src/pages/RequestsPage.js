@@ -70,7 +70,6 @@ export function RequestsPage() {
                 <th>Request ID</th>
                 <th>Submission Date</th>
                 <th>Items Count</th>
-                <th>Est. Total</th>
                 <th>Status</th>
                 <th>Actions</th>
               </tr>

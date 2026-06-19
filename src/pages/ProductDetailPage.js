@@ -2,7 +2,6 @@
 
 import { store } from '../store.js';
 import { router } from '../router.js';
-import { formatCurrency } from '../utils/helpers.js';
 import { StockBadge } from '../components/StatusBadge.js';
 import { QuantityCounter, bindQuantityCounterEvents } from '../components/QuantityCounter.js';
 import { showToast } from '../components/Toast.js';
@@ -73,7 +72,7 @@ export function ProductDetailPage(params) {
 
         <!-- Product Details -->
         <div class="product-detail-info">
-          <div style="display:flex;align-items:center;gap:var(--space-3);">
+          <div style="display:flex;align-items:center;gap:var(--space-3);flex-wrap:wrap;">
             <span style="font-family:var(--font-mono);font-size:var(--label-caps-size);color:var(--color-text-muted);text-transform:uppercase;letter-spacing:0.05em;">
               ${product.category} · #${product.sku}
             </span>
@@ -81,7 +80,6 @@ export function ProductDetailPage(params) {
           </div>
 
           <h1 class="product-detail-name">${product.name}</h1>
-          <div class="product-detail-price">${formatCurrency(product.price)}</div>
           
           <div style="block-size:1px;background-color:var(--color-border);margin-block:var(--space-2);"></div>
 

@@ -280,7 +280,16 @@ class Store {
   _loadProducts() {
     try {
       const data = localStorage.getItem(PRODUCTS_STORAGE_KEY);
-      return data ? JSON.parse(data) : MOCK_PRODUCTS;
+      if (data) {
+        const parsed = JSON.parse(data);
+        // If it's a valid populated array containing the new catalog items
+        if (Array.isArray(parsed) && parsed.length > 0 && parsed.some(p => p.sku && p.sku.startsWith('WT'))) {
+          return parsed;
+        }
+      }
+      // Auto-seed local storage with the complete MOCK_PRODUCTS catalog
+      localStorage.setItem(PRODUCTS_STORAGE_KEY, JSON.stringify(MOCK_PRODUCTS));
+      return MOCK_PRODUCTS;
     } catch {
       return MOCK_PRODUCTS;
     }

@@ -3,7 +3,7 @@
 import { store } from '../store.js';
 import { router } from '../router.js';
 import { OrderBadge } from '../components/StatusBadge.js';
-import { formatCurrency, formatDate, formatDateTime } from '../utils/helpers.js';
+import { formatDate, formatDateTime } from '../utils/helpers.js';
 import { ORDER_STATUS } from '../utils/constants.js';
 
 /**
@@ -76,10 +76,6 @@ export function RequestDetailPage(params) {
             Submitted on ${formatDateTime(order.createdAt)} · Last updated on ${formatDateTime(order.updatedAt)}
           </div>
         </div>
-        <div style="text-align:end;">
-          <div style="font-size:var(--body-sm-size);color:var(--color-text-muted);">Estimated Requisition Value</div>
-          <div style="font-family:var(--font-heading);font-size:1.75rem;font-weight:700;color:var(--primary);margin-block-start:var(--space-1);">${formatCurrency(order.totalAmount)}</div>
-        </div>
       </div>
 
       <!-- Status Timeline Stepper -->
@@ -139,8 +135,6 @@ export function RequestDetailPage(params) {
               <th style="inline-size:80px;">Item</th>
               <th>Description</th>
               <th style="text-align:center;">Quantity</th>
-              <th style="text-align:end;">Unit Price</th>
-              <th style="text-align:end;">Subtotal</th>
             </tr>
           </thead>
           <tbody>
@@ -163,8 +157,6 @@ export function RequestDetailPage(params) {
                     </div>
                   </td>
                   <td style="text-align:center;font-weight:500;">${item.quantity}</td>
-                  <td style="text-align:end;">${formatCurrency(item.unitPrice)}</td>
-                  <td style="text-align:end;font-weight:600;">${formatCurrency(item.unitPrice * item.quantity)}</td>
                 </tr>
               `;
             }).join('')}

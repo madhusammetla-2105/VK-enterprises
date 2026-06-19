@@ -3,7 +3,7 @@
 import { store } from '../store.js';
 import { router } from '../router.js';
 import { OrderBadge } from '../components/StatusBadge.js';
-import { formatCurrency, formatDate, formatDateTime } from '../utils/helpers.js';
+import { formatDate, formatDateTime } from '../utils/helpers.js';
 import { ORDER_STATUS } from '../utils/constants.js';
 import { showToast } from '../components/Toast.js';
 
@@ -89,10 +89,6 @@ export function AdminOrderDetailPage(params) {
             Submitted by ${order.userName} on ${formatDateTime(order.createdAt)} · Last updated on ${formatDateTime(order.updatedAt)}
           </div>
         </div>
-        <div style="text-align:end;">
-          <div style="font-size:var(--body-sm-size);color:var(--color-text-muted);">Requisition Value</div>
-          <div style="font-family:var(--font-heading);font-size:1.75rem;font-weight:700;color:var(--primary);margin-block-start:var(--space-1);">${formatCurrency(order.totalAmount)}</div>
-        </div>
       </div>
 
       <!-- Grid layout for Controls vs Products -->
@@ -158,8 +154,6 @@ export function AdminOrderDetailPage(params) {
                   <th style="inline-size:60px;">Item</th>
                   <th>Description</th>
                   <th style="text-align:center;">Quantity</th>
-                  <th style="text-align:end;">Unit Price</th>
-                  <th style="text-align:end;">Subtotal</th>
                 </tr>
               </thead>
               <tbody>
@@ -182,8 +176,6 @@ export function AdminOrderDetailPage(params) {
                         </div>
                       </td>
                       <td style="text-align:center;font-weight:500;">${item.quantity}</td>
-                      <td style="text-align:end;font-size:0.875rem;">${formatCurrency(item.unitPrice)}</td>
-                      <td style="text-align:end;font-weight:600;font-size:0.875rem;">${formatCurrency(item.unitPrice * item.quantity)}</td>
                     </tr>
                   `;
                 }).join('')}

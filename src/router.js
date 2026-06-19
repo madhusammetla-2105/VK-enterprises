@@ -64,8 +64,12 @@ class Router {
    * Resolve the current hash against registered routes.
    */
   async _resolve() {
-    const hash = window.location.hash || '#/';
+    const fullHash = window.location.hash || '#/';
     const previousRoute = this.currentRoute;
+
+    // Strip query string from hash for route matching
+    const [pathPart, queryPart] = fullHash.split('?');
+    const hash = pathPart;
 
     for (const route of this.routes) {
       const match = hash.match(route.regex);
@@ -75,7 +79,7 @@ class Router {
           params[name] = decodeURIComponent(match[i + 1]);
         });
 
-        const to = { path: route.path, hash, params, meta: route.meta };
+        const to = { path: route.path, hash: fullHash, params, meta: route.meta };
 
         // Run navigation guard
         if (this.beforeEachGuard) {

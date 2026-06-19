@@ -1,6 +1,6 @@
 /* ===== OrderRow Component ===== */
 
-import { formatCurrency, formatDate } from '../utils/helpers.js';
+import { formatDate } from '../utils/helpers.js';
 import { OrderBadge } from './StatusBadge.js';
 
 /**
@@ -27,7 +27,6 @@ export function OrderRow(order, isAdmin = false) {
         </td>
         <td>${formatDate(order.createdAt)}</td>
         <td>${itemCount} ${itemCount === 1 ? 'item' : 'items'}</td>
-        <td style="font-weight:600;">${formatCurrency(order.totalAmount)}</td>
         <td>${OrderBadge(order.status)}</td>
         <td>
           <a href="${detailUrl}" class="btn btn-secondary btn-sm" style="padding:4px 8px;display:inline-flex;align-items:center;gap:4px;">
@@ -48,7 +47,6 @@ export function OrderRow(order, isAdmin = false) {
       </td>
       <td>${formatDate(order.createdAt)}</td>
       <td>${itemCount} ${itemCount === 1 ? 'item' : 'items'}</td>
-      <td style="font-weight:600;">${formatCurrency(order.totalAmount)}</td>
       <td>${OrderBadge(order.status)}</td>
       <td>
         <a href="${detailUrl}" class="btn btn-secondary btn-sm" style="padding:4px 8px;display:inline-flex;align-items:center;gap:4px;">

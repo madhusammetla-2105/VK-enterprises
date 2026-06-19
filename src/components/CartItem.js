@@ -1,6 +1,5 @@
 /* ===== CartItem Component ===== */
 
-import { formatCurrency } from '../utils/helpers.js';
 import { QuantityCounter } from './QuantityCounter.js';
 
 /**
@@ -20,7 +19,6 @@ export function CartItem(item) {
   };
 
   const bgGradient = gradients[item.category] || gradients.general;
-  const itemTotal = item.unitPrice * item.quantity;
 
   return `
     <div class="cart-item" data-product-id="${item.productId}">
@@ -41,12 +39,6 @@ export function CartItem(item) {
             <span class="material-symbols-outlined" style="font-size:1.25rem;">delete</span>
             Remove
           </button>
-        </div>
-      </div>
-      <div class="cart-item-price">
-        ${formatCurrency(itemTotal)}
-        <div style="font-size:0.75rem;font-weight:400;color:var(--color-text-muted);margin-block-start:2px;text-align:end;">
-          ${formatCurrency(item.unitPrice)} each
         </div>
       </div>
     </div>

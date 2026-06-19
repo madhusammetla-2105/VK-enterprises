@@ -74,7 +74,6 @@ export function AdminOrdersPage() {
                 <th>Client / Organization</th>
                 <th>Submission Date</th>
                 <th>Item Units</th>
-                <th>Requisition Total</th>
                 <th>Status</th>
                 <th>Actions</th>
               </tr>

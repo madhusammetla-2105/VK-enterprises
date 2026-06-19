@@ -13,14 +13,14 @@ import { showToast } from '../components/Toast.js';
 export function HomePage() {
   // Filter out the 'all' category for the category grid showcase
   const displayCategories = CATEGORIES.filter(cat => cat.id !== 'all');
-  
+
   // Showcase the first 4 products
   const featuredProducts = store.products.slice(0, 4);
   const featuredProductsHtml = featuredProducts.map(p => ProductCard(p)).join('');
 
   const categoryIcons = {
-    surgical: 'chirurgy',
-    diagnostics: 'clinical_suite',
+    surgical: 'medical_services',
+    diagnostics: 'monitor_heart',
     general: 'stethoscope',
     emergency: 'emergency',
     consumables: 'package_2',
@@ -50,19 +50,19 @@ export function HomePage() {
       <!-- Stats Grid -->
       <section class="home-stats">
         <div class="home-stat">
-          <div class="home-stat-value">15+</div>
+          <div class="home-stat-value">2+</div>
           <div class="home-stat-label">Years of Service</div>
         </div>
         <div class="home-stat">
-          <div class="home-stat-value">500+</div>
+          <div class="home-stat-value">50+</div>
           <div class="home-stat-label">Hospitals & Labs Served</div>
         </div>
         <div class="home-stat">
-          <div class="home-stat-value">10,000+</div>
+          <div class="home-stat-value">1000+</div>
           <div class="home-stat-label">Products Supplied</div>
         </div>
         <div class="home-stat">
-          <div class="home-stat-value">99.9%</div>
+          <div class="home-stat-value">90%</div>
           <div class="home-stat-label">On-Time Medical Delivery</div>
         </div>
       </section>
@@ -185,7 +185,7 @@ export function bindHomeEvents() {
     const addBtn = e.target.closest('.add-to-quote-btn');
     if (addBtn) {
       e.preventDefault();
-      
+
       // Guard: Only logged in users can add to cart
       if (!store.isLoggedIn) {
         showToast('Please log in.', 'info');
@@ -204,7 +204,7 @@ export function bindHomeEvents() {
 
         store.addToCart(product, 1);
         showToast(`${product.name} added to cart`, 'success');
-        
+
         // Re-render router/layout to update cart badges/UI
         router._resolve();
       }

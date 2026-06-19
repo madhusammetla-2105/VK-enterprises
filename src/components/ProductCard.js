@@ -1,6 +1,5 @@
 /* ===== ProductCard Component ===== */
 
-import { formatCurrency } from '../utils/helpers.js';
 import { STOCK_LABELS } from '../utils/constants.js';
 
 /**
@@ -42,9 +41,8 @@ export function ProductCard(product) {
         <div class="product-card-name">${product.name}</div>
         <div class="product-card-desc">${product.description}</div>
       </div>
-      <div class="product-card-footer">
-        <div class="product-card-price">${formatCurrency(product.price)}</div>
-        <button class="btn btn-accent btn-sm add-to-quote-btn" data-product-id="${product.id}">
+      <div class="product-card-footer" style="justify-content: flex-end;">
+        <button class="btn btn-accent btn-sm add-to-quote-btn" style="inline-size: 100%;" data-product-id="${product.id}">
           Add to Cart
         </button>
       </div>
