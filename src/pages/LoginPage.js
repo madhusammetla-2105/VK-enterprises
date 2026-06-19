@@ -18,25 +18,9 @@ export function LoginPage() {
         <div class="login-split-left-glow"></div>
         <div class="login-split-left-content">
           <div class="login-split-logo-wrapper">
-            <img src="/images/vk_logo.png" alt="VK Enterprises" />
+            <img class = "w-50 h-25" src="/images/vk_logo.png" alt="VK Enterprises" />
           </div>
           <h1 class="login-split-title">VK Enterprises</h1>
-          <p class="login-split-subtitle">Precision Medical Supplies & Healthcare B2B Procurement Portal</p>
-          
-          <div class="login-split-features">
-            <div class="login-split-feature-item">
-              <span class="material-symbols-outlined">verified_user</span>
-              <span>Secure Hospital Credentials</span>
-            </div>
-            <div class="login-split-feature-item">
-              <span class="material-symbols-outlined">analytics</span>
-              <span>Real-time Stock & Order Verification</span>
-            </div>
-            <div class="login-split-feature-item">
-              <span class="material-symbols-outlined">local_shipping</span>
-              <span>Direct Clinical Logistics</span>
-            </div>
-          </div>
         </div>
         <div class="login-split-footer">
           © 2026 Sree VK Enterprises. All rights reserved.
@@ -193,7 +177,7 @@ export function bindLoginEvents() {
     loginForm.addEventListener('submit', (e) => {
       e.preventDefault();
       const email = document.getElementById('login-email').value.trim();
-      
+
       // Determine if logging in as admin or user based on email (for testing convenience)
       if (email.includes('admin')) {
         store.setUser({
