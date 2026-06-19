@@ -1,6 +1,8 @@
 /* ===== Topbar Component ===== */
 
 import { store } from '../store.js';
+import { router } from '../router.js';
+import { handleExternalSearch } from '../pages/ProductsPage.js';
 
 /**
  * Render the top navigation bar.
@@ -77,10 +79,15 @@ export function bindTopbarEvents() {
     searchInput.addEventListener('keypress', (e) => {
       if (e.key === 'Enter') {
         const query = searchInput.value.trim();
-        if (query) {
-          router.navigate(`#/products?q=${encodeURIComponent(query)}`);
+        const isProductsPage = window.location.hash.startsWith('#/products') && !window.location.hash.startsWith('#/products/');
+        if (isProductsPage) {
+          handleExternalSearch(query);
         } else {
-          router.navigate('#/products');
+          if (query) {
+            router.navigate(`#/products?q=${encodeURIComponent(query)}`);
+          } else {
+            router.navigate('#/products');
+          }
         }
       }
     });
