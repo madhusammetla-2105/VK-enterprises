@@ -12,33 +12,64 @@ let activeTab = 'login'; // 'login' | 'register'
  */
 export function LoginPage() {
   return `
-    <div class="login-container" style="animation:fadeIn var(--transition-base) both;">
-      <div class="login-brand" style="display: flex; flex-direction: column; align-items: center; text-align: center; margin-block-end: var(--space-6);">
-        <div style="background: #03144f; padding: var(--space-3) var(--space-4); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); display: inline-flex; align-items: center; justify-content: center; margin-block-end: var(--space-3); max-inline-size: 240px;">
-          <img src="/images/vk_logo.png" alt="VK Enterprises" style="max-inline-size: 100%; block-size: auto; max-block-size: 55px; object-fit: contain;" />
+    <div class="login-split-container">
+      <!-- Left Side: Brand Banner -->
+      <div class="login-split-left">
+        <div class="login-split-left-glow"></div>
+        <div class="login-split-left-content">
+          <div class="login-split-logo-wrapper">
+            <img src="/images/vk_logo.png" alt="VK Enterprises" />
+          </div>
+          <h1 class="login-split-title">VK Enterprises</h1>
+          <p class="login-split-subtitle">Precision Medical Supplies & Healthcare B2B Procurement Portal</p>
+          
+          <div class="login-split-features">
+            <div class="login-split-feature-item">
+              <span class="material-symbols-outlined">verified_user</span>
+              <span>Secure Hospital Credentials</span>
+            </div>
+            <div class="login-split-feature-item">
+              <span class="material-symbols-outlined">analytics</span>
+              <span>Real-time Stock & Order Verification</span>
+            </div>
+            <div class="login-split-feature-item">
+              <span class="material-symbols-outlined">local_shipping</span>
+              <span>Direct Clinical Logistics</span>
+            </div>
+          </div>
         </div>
-        <div class="login-brand-subtitle" style="font-size:0.875rem;color:var(--color-text-muted);margin-block-start:var(--space-1);font-weight:500;">B2B Medical Supply & Equipment Portal</div>
+        <div class="login-split-footer">
+          © 2026 Sree VK Enterprises. All rights reserved.
+        </div>
       </div>
 
-      <div class="login-card" style="box-shadow:0px 8px 32px rgba(0,0,0,0.03);border-color:var(--color-border);">
-        <div class="login-tabs">
-          <button class="login-tab ${activeTab === 'login' ? 'is-active' : ''}" id="tab-login" style="font-size:0.95rem;padding-block-end:var(--space-3);">Login</button>
-          <button class="login-tab ${activeTab === 'register' ? 'is-active' : ''}" id="tab-register" style="font-size:0.95rem;padding-block-end:var(--space-3);">Register</button>
-        </div>
+      <!-- Right Side: Login Section -->
+      <div class="login-split-right">
+        <div class="login-split-right-content">
+          <div class="login-mobile-brand">
+            <img src="/images/vk_logo.png" alt="VK Enterprises" />
+            <h2>VK Enterprises</h2>
+          </div>
 
-        ${activeTab === 'login' ? renderLoginForm() : renderRegisterForm()}
+          <div class="login-tabs">
+            <button class="login-tab ${activeTab === 'login' ? 'is-active' : ''}" id="tab-login" style="font-size:0.95rem;padding-block-end:var(--space-3); border-top:none; border-left:none; border-right:none; background:none;">Login</button>
+            <button class="login-tab ${activeTab === 'register' ? 'is-active' : ''}" id="tab-register" style="font-size:0.95rem;padding-block-end:var(--space-3); border-top:none; border-left:none; border-right:none; background:none;">Register</button>
+          </div>
 
-        <div class="login-divider" style="margin-block:var(--space-5);">or quick login for B2B testing</div>
+          ${activeTab === 'login' ? renderLoginForm() : renderRegisterForm()}
 
-        <div style="display:flex;flex-direction:column;gap:var(--space-3);">
-          <button class="btn btn-secondary" id="quick-login-user" style="inline-size:100%;display:flex;align-items:center;justify-content:center;gap:var(--space-2);min-block-size:2.75rem;border-color:var(--color-border);background:#fff;">
-            <span class="material-symbols-outlined" style="color:var(--secondary);">local_hospital</span>
-            Login as Hospital (User)
-          </button>
-          <button class="btn btn-primary" id="quick-login-admin" style="inline-size:100%;display:flex;align-items:center;justify-content:center;gap:var(--space-2);min-block-size:2.75rem;">
-            <span class="material-symbols-outlined" style="color:#fff;">admin_panel_settings</span>
-            Login as VK Staff (Admin)
-          </button>
+          <div class="login-divider" style="margin-block:var(--space-5);">or quick login for B2B testing</div>
+
+          <div class="quick-login-grid">
+            <button class="btn btn-secondary" id="quick-login-user">
+              <span class="material-symbols-outlined" style="color:var(--secondary);">local_hospital</span>
+              Hospital User
+            </button>
+            <button class="btn btn-primary" id="quick-login-admin">
+              <span class="material-symbols-outlined" style="color:#fff;">admin_panel_settings</span>
+              VK Admin
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -56,7 +87,7 @@ function renderLoginForm() {
         <label for="login-password" style="font-size:var(--body-sm-size);font-weight:500;">Password</label>
         <input type="password" id="login-password" class="input" placeholder="••••••••" required value="password123" />
       </div>
-      <button type="submit" class="btn btn-primary" style="margin-block-start:var(--space-2);">
+      <button type="submit" class="btn btn-primary" style="margin-block-start:var(--space-2); min-block-size: 2.75rem;">
         Sign In
       </button>
     </form>
@@ -86,7 +117,7 @@ function renderRegisterForm() {
         <label for="reg-pass" style="font-size:var(--body-sm-size);font-weight:500;">Password</label>
         <input type="password" id="reg-pass" class="input" placeholder="••••••••" required />
       </div>
-      <button type="submit" class="btn btn-primary" style="margin-block-start:var(--space-2);">
+      <button type="submit" class="btn btn-primary" style="margin-block-start:var(--space-2); min-block-size: 2.75rem;">
         Create Account
       </button>
     </form>
@@ -97,7 +128,7 @@ function renderRegisterForm() {
  * Bind login page events.
  */
 export function bindLoginEvents() {
-  const container = document.querySelector('.login-container');
+  const container = document.querySelector('.login-split-container');
   if (!container) return;
 
   // Tab switching

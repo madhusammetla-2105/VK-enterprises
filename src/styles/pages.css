@@ -453,36 +453,182 @@
   background-color: var(--tertiary);
 }
 
-/* ── Login Page ── */
-.login-container {
+/* ── Login Page (Split Screen Redesign) ── */
+.login-split-container {
+  display: flex;
   inline-size: 100%;
-  max-inline-size: 440px;
-  padding: var(--space-8);
+  min-block-size: 100vh;
+  background-color: var(--color-bg);
 }
 
-.login-brand {
+.login-split-left {
+  position: relative;
+  flex: 1.1;
+  background-color: var(--primary); /* Deep Navy #03144f */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: var(--space-12) var(--space-10) var(--space-8);
+  color: #ffffff;
+  overflow: hidden;
+}
+
+/* Glassmorphism gradient ambient glow */
+.login-split-left-glow {
+  position: absolute;
+  inset-block-start: -20%;
+  inset-inline-start: -20%;
+  inline-size: 70%;
+  block-size: 70%;
+  background: radial-gradient(circle, rgba(138, 245, 190, 0.15) 0%, rgba(3, 20, 79, 0) 70%);
+  filter: blur(80px);
+  pointer-events: none;
+}
+
+.login-split-left-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-block-start: var(--space-12);
+}
+
+.login-split-logo-wrapper {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: var(--space-4) var(--space-6);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-block-end: var(--space-6);
+}
+
+.login-split-logo-wrapper img {
+  max-inline-size: 180px;
+  block-size: auto;
+  max-block-size: 60px;
+  object-fit: contain;
+}
+
+.login-split-title {
+  font-family: var(--font-heading);
+  font-size: var(--display-lg-size);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-block-end: var(--space-2);
+}
+
+.login-split-subtitle {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: var(--body-lg-size);
+  line-height: 1.6;
+  max-inline-size: 420px;
+  margin-block-end: var(--space-12);
+}
+
+.login-split-features {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.login-split-feature-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--body-sm-size);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.login-split-feature-item .material-symbols-outlined {
+  color: var(--secondary-container); /* emerald green tint */
+  font-size: 1.25rem;
+}
+
+.login-split-footer {
+  position: relative;
+  z-index: 2;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.5);
+  font-family: var(--font-mono);
+}
+
+.login-split-right {
+  flex: 0.9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-12) var(--space-8);
+  background-color: var(--color-bg);
+}
+
+.login-split-right-content {
+  inline-size: 100%;
+  max-inline-size: 400px;
+  animation: slideInRight var(--transition-base) both;
+}
+
+.login-mobile-brand {
+  display: none;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
   margin-block-end: var(--space-8);
 }
 
-.login-brand-title {
-  font-family: var(--font-heading);
-  font-size: var(--headline-lg-size);
-  font-weight: 700;
-  letter-spacing: -0.01em;
-}
-
-.login-brand-subtitle {
-  color: var(--color-text-muted);
-  font-size: var(--body-sm-size);
-  margin-block-start: var(--space-2);
-}
-
-.login-card {
-  background-color: var(--color-card);
-  border: 1px solid var(--color-border);
+.login-mobile-brand img {
+  max-inline-size: 140px;
+  block-size: auto;
+  max-block-size: 50px;
+  object-fit: contain;
+  background: var(--primary);
+  padding: var(--space-2) var(--space-4);
   border-radius: var(--radius-lg);
-  padding: var(--space-8);
+  margin-block-end: var(--space-3);
+}
+
+.login-mobile-brand h2 {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.quick-login-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+}
+
+.quick-login-grid button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-block-size: 2.75rem;
+  font-size: var(--body-sm-size);
+  font-weight: 500;
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  .login-split-left {
+    display: none;
+  }
+  .login-split-right {
+    flex: 1;
+    padding: var(--space-6) var(--space-4);
+  }
+  .login-mobile-brand {
+    display: flex;
+  }
+  .login-split-right-content {
+    animation: fadeIn var(--transition-base) both;
+  }
 }
 
 .login-tabs {
