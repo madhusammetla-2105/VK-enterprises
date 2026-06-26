@@ -71,6 +71,37 @@ class Store {
     this._emit('orders');
   }
 
+  async registerUser(user) {
+    if (isFirebaseConfigured) {
+      try {
+        const docRef = doc(db, 'users', user.uid);
+        await setDoc(docRef, user);
+        console.log(`User ${user.name} successfully registered in Firestore.`);
+      } catch (error) {
+        console.error("Firestore registerUser failed:", error);
+      }
+    }
+  }
+
+  async checkUserExists(identifier) {
+    if (!isFirebaseConfigured) return null;
+    try {
+      const colRef = collection(db, 'users');
+      const snapshot = await getDocs(colRef);
+      let matchedUser = null;
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        if (data.email === identifier || data.phone === identifier) {
+          matchedUser = { uid: doc.id, ...data };
+        }
+      });
+      return matchedUser;
+    } catch (error) {
+      console.error("Firestore checkUserExists failed:", error);
+      return null;
+    }
+  }
+
   /* ── Cart ── */
 
   addToCart(product, quantity = 1) {

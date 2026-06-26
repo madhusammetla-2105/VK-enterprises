@@ -200,9 +200,18 @@ export function bindLoginEvents() {
   // Form Submissions
   const loginForm = document.getElementById('login-form');
   if (loginForm) {
-    loginForm.addEventListener('submit', (e) => {
+    loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const identifier = document.getElementById('login-identifier').value.trim();
+
+      // Check if user exists in Firestore
+      const dbUser = await store.checkUserExists(identifier);
+      if (dbUser) {
+        store.setUser(dbUser);
+        showToast(`Successfully logged in as ${dbUser.name}`, 'success');
+        router.navigate(dbUser.role === 'admin' ? '#/admin/orders' : '#/products');
+        return;
+      }
 
       // Determine if logging in as admin or user based on identifier (for testing convenience)
       if (identifier.includes('admin')) {
@@ -233,7 +242,7 @@ export function bindLoginEvents() {
 
   const registerForm = document.getElementById('register-form');
   if (registerForm) {
-    registerForm.addEventListener('submit', (e) => {
+    registerForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const org = document.getElementById('reg-org').value.trim();
       const name = document.getElementById('reg-name').value.trim();
@@ -245,7 +254,7 @@ export function bindLoginEvents() {
       const country = document.getElementById('reg-country').value.trim();
       const pincode = document.getElementById('reg-pincode').value.trim();
 
-      store.setUser({
+      const userPayload = {
         uid: 'user-' + Date.now(),
         name,
         email,
@@ -257,7 +266,10 @@ export function bindLoginEvents() {
         country,
         pincode,
         role: 'user',
-      });
+      };
+
+      await store.registerUser(userPayload);
+      store.setUser(userPayload);
 
       showToast('Registration successful! Account created.', 'success');
       router.navigate('#/products');
