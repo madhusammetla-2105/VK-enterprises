@@ -18,9 +18,9 @@ export function LoginPage() {
         <div class="login-split-left-glow"></div>
         <div class="login-split-left-content">
           <div class="login-split-logo-wrapper">
-            <img class = "w-50 h-25" src="/images/vk_logo.png" alt="VK Enterprises" />
+            <img src="/images/vk_logo.png" alt="VK Enterprises" />
           </div>
-          <h1 class="login-split-title">VK Enterprises</h1>
+          
         </div>
         <div class="login-split-footer">
           © 2026 Sree VK Enterprises. All rights reserved.
@@ -64,8 +64,8 @@ function renderLoginForm() {
   return `
     <form class="login-form" id="login-form">
       <div style="display:flex;flex-direction:column;gap:var(--space-2);">
-        <label for="login-email" style="font-size:var(--body-sm-size);font-weight:500;">Email Address</label>
-        <input type="email" id="login-email" class="input" placeholder="name@hospital.com" required value="rajesh@cityhospital.com" />
+        <label for="login-identifier" style="font-size:var(--body-sm-size);font-weight:500;">Email Address or Phone Number</label>
+        <input type="text" id="login-identifier" class="input" placeholder="e.g. name@gmai.com or +91 9084756281" required value="rajesh@cityhospital.com" />
       </div>
       <div style="display:flex;flex-direction:column;gap:var(--space-2);">
         <label for="login-password" style="font-size:var(--body-sm-size);font-weight:500;">Password</label>
@@ -80,24 +80,50 @@ function renderLoginForm() {
 
 function renderRegisterForm() {
   return `
-    <form class="login-form" id="register-form">
-      <div style="display:flex;flex-direction:column;gap:var(--space-2);">
+    <form class="login-form" id="register-form" style="gap:var(--space-3.5);">
+      <div style="display:flex;flex-direction:column;gap:var(--space-1.5);">
         <label for="reg-org" style="font-size:var(--body-sm-size);font-weight:500;">Hospital / Pharmacy Name</label>
         <input type="text" id="reg-org" class="input" placeholder="e.g. City General Hospital" required />
       </div>
-      <div style="display:flex;flex-direction:column;gap:var(--space-2);">
+      <div style="display:flex;flex-direction:column;gap:var(--space-1.5);">
         <label for="reg-name" style="font-size:var(--body-sm-size);font-weight:500;">Contact Person Name</label>
         <input type="text" id="reg-name" class="input" placeholder="e.g. Dr. Rajesh Kumar" required />
       </div>
-      <div style="display:flex;flex-direction:column;gap:var(--space-2);">
-        <label for="reg-email" style="font-size:var(--body-sm-size);font-weight:500;">Email Address</label>
-        <input type="email" id="reg-email" class="input" placeholder="name@hospital.com" required />
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-3);">
+        <div style="display:flex;flex-direction:column;gap:var(--space-1.5);">
+          <label for="reg-email" style="font-size:var(--body-sm-size);font-weight:500;">Email Address</label>
+          <input type="email" id="reg-email" class="input" placeholder="name@hospital.com" required />
+        </div>
+        <div style="display:flex;flex-direction:column;gap:var(--space-1.5);">
+          <label for="reg-phone" style="font-size:var(--body-sm-size);font-weight:500;">Phone Number</label>
+          <input type="tel" id="reg-phone" class="input" placeholder="+91 98765 43210" required />
+        </div>
       </div>
-      <div style="display:flex;flex-direction:column;gap:var(--space-2);">
-        <label for="reg-phone" style="font-size:var(--body-sm-size);font-weight:500;">Phone Number</label>
-        <input type="tel" id="reg-phone" class="input" placeholder="+91 98765 43210" required />
+      <div style="display:flex;flex-direction:column;gap:var(--space-1.5);">
+        <label for="reg-address" style="font-size:var(--body-sm-size);font-weight:500;">Address</label>
+        <input type="text" id="reg-address" class="input" placeholder="e.g. 123 Healthcare Lane" required />
       </div>
-      <div style="display:flex;flex-direction:column;gap:var(--space-2);">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-3);">
+        <div style="display:flex;flex-direction:column;gap:var(--space-1.5);">
+          <label for="reg-city" style="font-size:var(--body-sm-size);font-weight:500;">City</label>
+          <input type="text" id="reg-city" class="input" placeholder="e.g. Hyderabad" required />
+        </div>
+        <div style="display:flex;flex-direction:column;gap:var(--space-1.5);">
+          <label for="reg-state" style="font-size:var(--body-sm-size);font-weight:500;">State</label>
+          <input type="text" id="reg-state" class="input" placeholder="e.g. Telangana" required />
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-3);">
+        <div style="display:flex;flex-direction:column;gap:var(--space-1.5);">
+          <label for="reg-country" style="font-size:var(--body-sm-size);font-weight:500;">Country</label>
+          <input type="text" id="reg-country" class="input" placeholder="e.g. India" required />
+        </div>
+        <div style="display:flex;flex-direction:column;gap:var(--space-1.5);">
+          <label for="reg-pincode" style="font-size:var(--body-sm-size);font-weight:500;">Pincode</label>
+          <input type="text" id="reg-pincode" class="input" placeholder="e.g. 500001" required pattern="[0-9]{5,6}" />
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:var(--space-1.5);">
         <label for="reg-pass" style="font-size:var(--body-sm-size);font-weight:500;">Password</label>
         <input type="password" id="reg-pass" class="input" placeholder="••••••••" required />
       </div>
@@ -176,15 +202,15 @@ export function bindLoginEvents() {
   if (loginForm) {
     loginForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      const email = document.getElementById('login-email').value.trim();
+      const identifier = document.getElementById('login-identifier').value.trim();
 
-      // Determine if logging in as admin or user based on email (for testing convenience)
-      if (email.includes('admin')) {
+      // Determine if logging in as admin or user based on identifier (for testing convenience)
+      if (identifier.includes('admin')) {
         store.setUser({
           uid: 'admin-1',
           name: 'Admin User',
-          email,
-          phone: '+91 11223 34455',
+          email: identifier.includes('@') ? identifier : 'admin@vkenp.com',
+          phone: !identifier.includes('@') ? identifier : '+91 11223 34455',
           organization: 'VK Enterprises',
           role: 'admin',
         });
@@ -194,8 +220,8 @@ export function bindLoginEvents() {
         store.setUser({
           uid: 'user-1',
           name: 'Dr. Rajesh Kumar',
-          email,
-          phone: '+91 98765 43210',
+          email: identifier.includes('@') ? identifier : 'rajesh@cityhospital.com',
+          phone: !identifier.includes('@') ? identifier : '+91 98765 43210',
           organization: 'City General Hospital',
           role: 'user',
         });
@@ -213,6 +239,11 @@ export function bindLoginEvents() {
       const name = document.getElementById('reg-name').value.trim();
       const email = document.getElementById('reg-email').value.trim();
       const phone = document.getElementById('reg-phone').value.trim();
+      const address = document.getElementById('reg-address').value.trim();
+      const city = document.getElementById('reg-city').value.trim();
+      const state = document.getElementById('reg-state').value.trim();
+      const country = document.getElementById('reg-country').value.trim();
+      const pincode = document.getElementById('reg-pincode').value.trim();
 
       store.setUser({
         uid: 'user-' + Date.now(),
@@ -220,6 +251,11 @@ export function bindLoginEvents() {
         email,
         phone,
         organization: org,
+        address,
+        city,
+        state,
+        country,
+        pincode,
         role: 'user',
       });
 

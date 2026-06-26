@@ -14,13 +14,7 @@ export const ROUTES = {
 };
 
 export const CATEGORIES = [
-  { id: 'all',          label: 'All Products' },
-  { id: 'surgical',     label: 'Surgical Tools' },
-  { id: 'diagnostics',  label: 'Diagnostics' },
-  { id: 'emergency',    label: 'Emergency Care' },
-  { id: 'consumables',  label: 'Consumables' },
-  { id: 'lab',          label: 'Lab' },
-  { id: 'general',      label: 'General' },
+  { id: 'all', label: 'All Products' }
 ];
 
 export const ORDER_STATUS = {

@@ -260,9 +260,9 @@ export function bindAdminOrderDetailEvents(params) {
   };
 
   // Helper to transition state
-  const handleTransition = (newStatus, successMsg) => {
+  const handleTransition = async (newStatus, successMsg) => {
     const notes = getNotes();
-    const success = store.updateOrderStatus(orderId, newStatus, notes);
+    const success = await store.updateOrderStatus(orderId, newStatus, notes);
     if (success) {
       showToast(successMsg, 'success');
       router._resolve();
@@ -317,15 +317,14 @@ export function bindAdminOrderDetailEvents(params) {
   // Save notes only button click
   const saveNotesBtn = document.getElementById('admin-save-notes-btn');
   if (saveNotesBtn) {
-    saveNotesBtn.addEventListener('click', () => {
+    saveNotesBtn.addEventListener('click', async () => {
       const notes = getNotes();
-      const order = store.orders.find(o => o.id === orderId);
-      if (order) {
-        order.adminNotes = notes;
-        order.updatedAt = new Date().toISOString();
-        store._saveOrders();
+      const success = await store.updateOrderNotes(orderId, notes);
+      if (success) {
         showToast('Agent notes saved successfully.', 'success');
         router._resolve();
+      } else {
+        showToast('Failed to save agent notes.', 'error');
       }
     });
   }

@@ -3,6 +3,7 @@
 import { MOCK_ORDERS, MOCK_PRODUCTS } from './utils/constants.js';
 import { collection, getDocs, doc, setDoc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { db, isFirebaseConfigured } from './firebase.js';
+import { seedProducts } from './utils/seed.js';
 
 const CART_STORAGE_KEY = 'vk_cart';
 const ORDERS_STORAGE_KEY = 'vk_orders';
@@ -57,12 +58,17 @@ class Store {
     this._state.user = user;
     this._emit('user');
     this._emit('auth');
+    if (user) {
+      this.initOrders();
+    }
   }
 
   clearUser() {
     this._state.user = null;
+    this._state.orders = this._loadOrders(); // fallback to localStorage/MOCK orders
     this._emit('user');
     this._emit('auth');
+    this._emit('orders');
   }
 
   /* ── Cart ── */
@@ -129,13 +135,22 @@ class Store {
 
   /* ── Orders ── */
 
-  addOrder(order) {
+  async addOrder(order) {
     this._state.orders.unshift(order);
     this._saveOrders();
     this._emit('orders');
+
+    if (isFirebaseConfigured) {
+      try {
+        const docRef = doc(db, 'orders', order.id);
+        await setDoc(docRef, order);
+      } catch (error) {
+        console.error("Firestore addOrder failed:", error);
+      }
+    }
   }
 
-  updateOrderStatus(orderId, status, adminNotes = '') {
+  async updateOrderStatus(orderId, status, adminNotes = '') {
     const order = this._state.orders.find(o => o.id === orderId);
     if (order) {
       order.status = status;
@@ -145,6 +160,43 @@ class Store {
       }
       this._saveOrders();
       this._emit('orders');
+
+      if (isFirebaseConfigured) {
+        try {
+          const docRef = doc(db, 'orders', orderId);
+          await updateDoc(docRef, {
+            status: order.status,
+            updatedAt: order.updatedAt,
+            adminNotes: order.adminNotes
+          });
+        } catch (error) {
+          console.error("Firestore updateOrderStatus failed:", error);
+        }
+      }
+      return true;
+    }
+    return false;
+  }
+
+  async updateOrderNotes(orderId, adminNotes) {
+    const order = this._state.orders.find(o => o.id === orderId);
+    if (order) {
+      order.adminNotes = adminNotes;
+      order.updatedAt = new Date().toISOString();
+      this._saveOrders();
+      this._emit('orders');
+
+      if (isFirebaseConfigured) {
+        try {
+          const docRef = doc(db, 'orders', orderId);
+          await updateDoc(docRef, {
+            adminNotes: order.adminNotes,
+            updatedAt: order.updatedAt
+          });
+        } catch (error) {
+          console.error("Firestore updateOrderNotes failed:", error);
+        }
+      }
       return true;
     }
     return false;
@@ -214,16 +266,94 @@ class Store {
     try {
       const colRef = collection(db, 'products');
       const snapshot = await getDocs(colRef);
-      const items = [];
+      let items = [];
       snapshot.forEach(doc => {
         items.push({ id: doc.id, ...doc.data() });
       });
+
+      // Auto-seed Firestore products collection if it is completely empty
+      if (items.length === 0) {
+        console.log("Firestore products collection is empty. Auto-seeding catalog from MOCK_PRODUCTS...");
+        await seedProducts(MOCK_PRODUCTS);
+        const seededSnapshot = await getDocs(colRef);
+        items = [];
+        seededSnapshot.forEach(doc => {
+          items.push({ id: doc.id, ...doc.data() });
+        });
+      }
+
+      // Sync any products added in localStorage before Firebase was configured
+      const localItems = this._loadProducts();
+      const missingInFirestore = localItems.filter(localItem => !items.some(item => item.id === localItem.id));
+      if (missingInFirestore.length > 0) {
+        console.log(`Migrating ${missingInFirestore.length} custom local products to Firestore...`);
+        const uploadPromises = missingInFirestore.map(localItem => {
+          const docRef = doc(db, 'products', localItem.id);
+          const payload = {
+            name: localItem.name || 'Unnamed Product',
+            category: localItem.category || 'general',
+            sku: localItem.sku || localItem.id,
+            description: localItem.description || '',
+            price: parseFloat(localItem.price) || 0,
+            stockStatus: localItem.stockStatus || 'in_stock',
+            imageUrl: localItem.imageUrl || '',
+            specs: localItem.specs || null
+          };
+          return setDoc(docRef, payload);
+        });
+        await Promise.all(uploadPromises);
+        
+        // Re-fetch to merge
+        const updatedSnapshot = await getDocs(colRef);
+        items = [];
+        updatedSnapshot.forEach(doc => {
+          items.push({ id: doc.id, ...doc.data() });
+        });
+      }
+
       this._state.products = items;
       this._saveProducts();
       this._emit('products');
       console.log(`Loaded ${items.length} products dynamically from Firebase Firestore.`);
     } catch (error) {
       console.error("Firestore initProducts failed:", error);
+    }
+  }
+
+  async initOrders() {
+    if (!isFirebaseConfigured) {
+      console.log("Firebase config not loaded. Using local storage fallback for orders.");
+      return;
+    }
+    if (!this.user) {
+      this._state.orders = [];
+      this._saveOrders();
+      this._emit('orders');
+      return;
+    }
+    try {
+      const colRef = collection(db, 'orders');
+      const snapshot = await getDocs(colRef);
+      const items = [];
+      snapshot.forEach(doc => {
+        items.push({ id: doc.id, ...doc.data() });
+      });
+
+      // Filter by role
+      if (this.isAdmin) {
+        // Admin gets all orders
+        this._state.orders = items.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      } else {
+        // Client gets only their orders
+        this._state.orders = items
+          .filter(order => order.userId === this.user.uid)
+          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      }
+      this._saveOrders();
+      this._emit('orders');
+      console.log(`Loaded ${this._state.orders.length} orders dynamically from Firebase Firestore for user ${this.user.name}.`);
+    } catch (error) {
+      console.error("Firestore initOrders failed:", error);
     }
   }
 

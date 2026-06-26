@@ -3,15 +3,14 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 
-// TODO: Replace these placeholders with your actual Firebase Project keys from the Firebase Console:
-// Settings (cog icon) > Project Settings > General > Your Apps > Web Apps (Add app if none exists)
+// Check Vite environment variables first, falling back to placeholders:
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: (import.meta.env && import.meta.env.VITE_FIREBASE_API_KEY) || "YOUR_API_KEY",
+  authDomain: (import.meta.env && import.meta.env.VITE_FIREBASE_AUTH_DOMAIN) || "YOUR_PROJECT_ID.firebaseapp.com",
+  projectId: (import.meta.env && import.meta.env.VITE_FIREBASE_PROJECT_ID) || "YOUR_PROJECT_ID",
+  storageBucket: (import.meta.env && import.meta.env.VITE_FIREBASE_STORAGE_BUCKET) || "YOUR_PROJECT_ID.appspot.com",
+  messagingSenderId: (import.meta.env && import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID) || "YOUR_SENDER_ID",
+  appId: (import.meta.env && import.meta.env.VITE_FIREBASE_APP_ID) || "YOUR_APP_ID"
 };
 
 let db = null;

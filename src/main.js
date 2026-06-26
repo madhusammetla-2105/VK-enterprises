@@ -173,6 +173,22 @@ store.on('cart', () => {
   }
 });
 
+// Automatically sync UI when orders update in Firestore background
+store.on('orders', () => {
+  const path = window.location.hash || '#/';
+  if (path.startsWith('#/requests') || path.startsWith('#/admin/orders')) {
+    router._resolve();
+  }
+});
+
+// Automatically sync UI when products update in Firestore background
+store.on('products', () => {
+  const path = window.location.hash || '#/';
+  if (path.startsWith('#/products') || path.startsWith('#/admin/products')) {
+    router._resolve();
+  }
+});
+
 // Kick off routing after loading dynamic database products
 (async () => {
   try {

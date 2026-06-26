@@ -43,7 +43,6 @@ export function HomePage() {
             Browse Inventory
             <span class="material-symbols-outlined">arrow_forward</span>
           </a>
-          <a href="#/login" class="btn btn-secondary btn-lg">Partner Portal</a>
         </div>
       </section>
 
@@ -74,14 +73,22 @@ export function HomePage() {
           Select a category to view high-precision medical catalog.
         </p>
         <div class="home-categories-grid">
-          ${displayCategories.map(cat => `
-            <div class="home-category-card" data-category="${cat.id}">
-              <span class="material-symbols-outlined home-category-icon">
-                ${categoryIcons[cat.id] || 'medical_services'}
-              </span>
-              <div class="home-category-name">${cat.label}</div>
-            </div>
-          `).join('')}
+          <div class="home-category-card" data-category="placeholder1">
+            <span class="material-symbols-outlined home-category-icon">medical_services</span>
+            <div class="home-category-name">Category 1</div>
+          </div>
+          <div class="home-category-card" data-category="placeholder2">
+            <span class="material-symbols-outlined home-category-icon">medical_services</span>
+            <div class="home-category-name">Category 2</div>
+          </div>
+          <div class="home-category-card" data-category="placeholder3">
+            <span class="material-symbols-outlined home-category-icon">medical_services</span>
+            <div class="home-category-name">Category 3</div>
+          </div>
+          <div class="home-category-card" data-category="placeholder4">
+            <span class="material-symbols-outlined home-category-icon">medical_services</span>
+            <div class="home-category-name">Category 4</div>
+          </div>
         </div>
       </section>
 

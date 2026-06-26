@@ -464,7 +464,8 @@
 .login-split-left {
   position: relative;
   flex: 1.1;
-  background-color: var(--primary); /* Deep Navy #03144f */
+  background-color: var(--primary);
+  /* Deep Navy #03144f */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -512,10 +513,10 @@
 }
 
 .login-split-logo-wrapper img {
-  max-inline-size: 180px;
+  max-inline-size: 700px;
   block-size: auto;
-  max-block-size: 60px;
-  object-fit: contain;
+  max-block-size: 300px;
+  object-fit: fill;
 }
 
 .login-split-title {
@@ -549,7 +550,8 @@
 }
 
 .login-split-feature-item .material-symbols-outlined {
-  color: var(--secondary-container); /* emerald green tint */
+  color: var(--secondary-container);
+  /* emerald green tint */
   font-size: 1.25rem;
 }
 
@@ -623,13 +625,16 @@
   .login-split-left {
     display: none;
   }
+
   .login-split-right {
     flex: 1;
     padding: var(--space-6) var(--space-4);
   }
+
   .login-mobile-brand {
     display: flex;
   }
+
   .login-split-right-content {
     animation: fadeIn var(--transition-base) both;
   }

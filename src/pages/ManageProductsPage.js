@@ -417,18 +417,11 @@ function openAddEditModal(product = null) {
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:var(--space-4);">
         <div style="display:flex; flex-direction:column; gap:var(--space-2);">
           <label for="prod-category" style="font-size:var(--body-sm-size); font-weight:600; color:var(--color-text);">Category *</label>
-          <select id="prod-category" class="input" required style="padding-inline-end: var(--space-8);">
-            <option value="surgical" ${product?.category === 'surgical' ? 'selected' : ''}>Surgical Tools</option>
-            <option value="diagnostics" ${product?.category === 'diagnostics' ? 'selected' : ''}>Diagnostics</option>
-            <option value="emergency" ${product?.category === 'emergency' ? 'selected' : ''}>Emergency Care</option>
-            <option value="consumables" ${product?.category === 'consumables' ? 'selected' : ''}>Consumables</option>
-            <option value="lab" ${product?.category === 'lab' ? 'selected' : ''}>Lab</option>
-            <option value="general" ${product?.category === 'general' ? 'selected' : ''}>General</option>
-          </select>
+          <input id="prod-category" class="input" required placeholder="Enter category" style="width:100%; padding-inline-end: var(--space-8);" value="${product?.category || ''}" />
         </div>
         <div style="display:flex; flex-direction:column; gap:var(--space-2);">
           <label for="prod-status" style="font-size:var(--body-sm-size); font-weight:600; color:var(--color-text);">Stock Status *</label>
-          <select id="prod-status" class="input" required style="padding-inline-end: var(--space-8);">
+          <select id="prod-status" class="input" required style="width:100%; padding-inline-end: var(--space-8);">
             <option value="in_stock" ${product?.stockStatus === 'in_stock' ? 'selected' : ''}>In Stock</option>
             <option value="low" ${product?.stockStatus === 'low' ? 'selected' : ''}>Low Stock</option>
             <option value="backorder" ${product?.stockStatus === 'backorder' ? 'selected' : ''}>On Order</option>
