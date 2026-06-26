@@ -1,7 +1,7 @@
 /* ===== Simple Store (Cart + User State) ===== */
 
 import { MOCK_ORDERS, MOCK_PRODUCTS } from './utils/constants.js';
-import { collection, getDocs, doc, setDoc, updateDoc, deleteDoc } from 'firebase/firestore';
+import { collection, getDocs, getDoc, doc, setDoc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { db, isFirebaseConfigured } from './firebase.js';
 import { seedProducts } from './utils/seed.js';
 
@@ -14,9 +14,9 @@ class Store {
     this._listeners = {};
     this._state = {
       user: null,       // { uid, name, email, phone, organization, role }
-      cart: this._loadCart(),
-      orders: this._loadOrders(),
-      products: this._loadProducts(),
+      cart: [],
+      orders: [],
+      products: MOCK_PRODUCTS,
       sidebarOpen: false,
     };
   }
@@ -60,15 +60,18 @@ class Store {
     this._emit('auth');
     if (user) {
       this.initOrders();
+      this.initCart();
     }
   }
 
   clearUser() {
     this._state.user = null;
-    this._state.orders = this._loadOrders(); // fallback to localStorage/MOCK orders
+    this._state.orders = [];
+    this._state.cart = [];
     this._emit('user');
     this._emit('auth');
     this._emit('orders');
+    this._emit('cart');
   }
 
   async registerUser(user) {
@@ -249,40 +252,6 @@ class Store {
 
   /* ── Persistence ── */
 
-  _loadCart() {
-    try {
-      const data = localStorage.getItem(CART_STORAGE_KEY);
-      return data ? JSON.parse(data) : [];
-    } catch {
-      return [];
-    }
-  }
-
-  _saveCart() {
-    try {
-      localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(this._state.cart));
-    } catch {
-      // Storage full or unavailable — silent fail
-    }
-  }
-
-  _loadOrders() {
-    try {
-      const data = localStorage.getItem(ORDERS_STORAGE_KEY);
-      return data ? JSON.parse(data) : MOCK_ORDERS;
-    } catch {
-      return MOCK_ORDERS;
-    }
-  }
-
-  _saveOrders() {
-    try {
-      localStorage.setItem(ORDERS_STORAGE_KEY, JSON.stringify(this._state.orders));
-    } catch {
-      // Storage full or unavailable
-    }
-  }
-
   /* ── Products ── */
 
   get products() {
@@ -388,6 +357,27 @@ class Store {
     }
   }
 
+  async initCart() {
+    if (!isFirebaseConfigured || !this.user) {
+      this._state.cart = [];
+      this._emit('cart');
+      return;
+    }
+    try {
+      const docRef = doc(db, 'carts', this.user.uid);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        this._state.cart = docSnap.data().items || [];
+      } else {
+        this._state.cart = [];
+      }
+      this._emit('cart');
+      console.log(`Loaded cart from Firestore for user ${this.user.name}.`);
+    } catch (error) {
+      console.error("Firestore initCart failed:", error);
+    }
+  }
+
   async addProduct(product) {
     this._state.products.unshift(product);
     this._saveProducts();
@@ -438,30 +428,35 @@ class Store {
     }
   }
 
-  _loadProducts() {
-    try {
-      const data = localStorage.getItem(PRODUCTS_STORAGE_KEY);
-      if (data) {
-        const parsed = JSON.parse(data);
-        // If it's a valid populated array containing the new catalog items
-        if (Array.isArray(parsed) && parsed.length > 0 && parsed.some(p => p.sku && p.sku.startsWith('WT'))) {
-          return parsed;
-        }
+  _loadCart() {
+    return [];
+  }
+
+  async _saveCart() {
+    if (isFirebaseConfigured && this.user) {
+      try {
+        const docRef = doc(db, 'carts', this.user.uid);
+        await setDoc(docRef, { items: this._state.cart });
+      } catch (error) {
+        console.error("Firestore _saveCart failed:", error);
       }
-      // Auto-seed local storage with the complete MOCK_PRODUCTS catalog
-      localStorage.setItem(PRODUCTS_STORAGE_KEY, JSON.stringify(MOCK_PRODUCTS));
-      return MOCK_PRODUCTS;
-    } catch {
-      return MOCK_PRODUCTS;
     }
   }
 
+  _loadOrders() {
+    return [];
+  }
+
+  _saveOrders() {
+    // No-op - orders stored only in Firestore
+  }
+
+  _loadProducts() {
+    return MOCK_PRODUCTS;
+  }
+
   _saveProducts() {
-    try {
-      localStorage.setItem(PRODUCTS_STORAGE_KEY, JSON.stringify(this._state.products));
-    } catch {
-      // Storage full or unavailable
-    }
+    // No-op - products stored only in Firestore
   }
 }
 
