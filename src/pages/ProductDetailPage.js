@@ -39,7 +39,7 @@ export function ProductDetailPage(params) {
   };
 
   const bgGradient = gradients[product.category] || gradients.general;
-  const allImages = [product.imageUrl, ...(product.images || [])].filter(Boolean);
+  const allImages = [...new Set([product.imageUrl, ...(product.images || [])])].filter(Boolean);
 
   return `
     <div class="product-detail-container">

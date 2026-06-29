@@ -30,7 +30,7 @@
 
 .product-card-image {
   position: relative;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 1;
   background-color: var(--surface-container);
   overflow: clip;
   border-radius: var(--radius) var(--radius) 0 0;
@@ -39,7 +39,8 @@
 .product-card-image img {
   inline-size: 100%;
   block-size: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  padding: var(--space-3);
   transition: transform var(--transition-slow);
 }
 
@@ -148,7 +149,8 @@
 .product-detail-image img {
   inline-size: 100%;
   block-size: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  padding: var(--space-4);
 }
 
 .product-detail-gallery {
